@@ -27,7 +27,7 @@ package module.contents.domain;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import pt.ist.bennu.core.util.BundleUtil;
+import pt.ist.bennu.core.util.legacy.BundleUtil;
 import pt.ist.fenixframework.Atomic;
 
 /**

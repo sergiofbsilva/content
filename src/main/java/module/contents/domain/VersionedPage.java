@@ -26,12 +26,12 @@ package module.contents.domain;
 
 import java.util.List;
 
-import pt.ist.bennu.core.applicationTier.Authenticate.UserView;
 import pt.ist.bennu.core.domain.MyOrg;
 import pt.ist.bennu.core.domain.User;
 import pt.ist.bennu.core.domain.VirtualHost;
-import pt.ist.bennu.core.domain.contents.Node;
-import pt.ist.bennu.core.domain.groups.PersistentGroup;
+import pt.ist.bennu.core.domain.groups.Group;
+import pt.ist.bennu.core.domain.groups.legacy.PersistentGroup;
+import pt.ist.bennu.core.security.Authenticate;
 import pt.ist.fenixframework.Atomic;
 import pt.utl.ist.fenix.tools.util.i18n.MultiLanguageString;
 
@@ -42,17 +42,17 @@ import pt.utl.ist.fenix.tools.util.i18n.MultiLanguageString;
  */
 public class VersionedPage extends VersionedPage_Base {
 
-    public VersionedPage(VirtualHost host, Node node, PersistentGroup group, MultiLanguageString title) {
+    public VersionedPage(VirtualHost host, PersistentGroup group, MultiLanguageString title) {
         setMyOrg(MyOrg.getInstance());
         setTitle(title);
         new PageVersion(this, 0);
-        final VersionedPageNode pageNode = new VersionedPageNode(host, node, this, null);
-        pageNode.setAccessibilityGroup(group);
+//        final VersionedPageNode pageNode = new VersionedPageNode(host, node, this, null);
+//        pageNode.setAccessibilityGroup(group);
     }
 
     @Atomic
     public static VersionedPage createNewPage(VersionedPageBean pageBean) {
-        return new VersionedPage(pageBean.getHost(), pageBean.getNode(), pageBean.getGroup(), pageBean.getTitle());
+        return new VersionedPage(pageBean.getHost(), pageBean.getGroup(), pageBean.getTitle());
     }
 
     @Atomic
@@ -124,15 +124,11 @@ public class VersionedPage extends VersionedPage_Base {
     }
 
     public boolean isUserAbleToViewOptions(User user) {
-        return !isLocked() || (user != null && user.hasRoleType(pt.ist.bennu.core.domain.RoleType.MANAGER));
+        return !isLocked() || (user != null && Group.parse("#managers").isMember(user));
     }
 
     public boolean isCurrentUserAbleToViewOptions() {
-        return isUserAbleToViewOptions(UserView.getCurrentUser());
-    }
-    @Deprecated
-    public java.util.Set<module.contents.domain.VersionedPageNode> getNodes() {
-        return getNodesSet();
+        return isUserAbleToViewOptions(Authenticate.getUser());
     }
 
     @Deprecated

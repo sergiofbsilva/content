@@ -26,9 +26,6 @@
 package module.contents.domain;
 
 
-class VersionedPageNode extends .pt.ist.bennu.core.domain.contents.Node {
-}
-
 class VersionedPage {
 	MultiLanguageString title;
 	Boolean lockPage;
@@ -44,17 +41,9 @@ class VersionedFile {
 	String presentationName;
 }
 
-class FileVersion extends .pt.ist.fenixframework.plugins.fileSupport.domain.GenericFile {
+class FileVersion extends .pt.ist.bennu.io.domain.GenericFile {
 	DateTime date;
 	int revision;
-}
-
-relation PageVersionNode {
-	VersionedPageNode playsRole nodes {
-		multiplicity *;
-	}
-	VersionedPage playsRole page;
-	 
 }
 
 relation PageVersioning {

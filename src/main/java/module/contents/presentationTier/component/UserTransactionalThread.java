@@ -24,7 +24,8 @@
  */
 package module.contents.presentationTier.component;
 
-import pt.ist.bennu.core.applicationTier.Authenticate.UserView;
+import pt.ist.bennu.core.domain.User;
+import pt.ist.bennu.core.security.Authenticate;
 import pt.ist.fenixframework.Atomic;
 import pt.ist.fenixframework.Atomic.TxMode;
 
@@ -35,16 +36,17 @@ import pt.ist.fenixframework.Atomic.TxMode;
  */
 public abstract class UserTransactionalThread extends Thread {
 
-    private final UserView user = pt.ist.fenixWebFramework.security.UserView.getUser();
+    //TODO: What about Authenticate.setUser
+    private final User user = Authenticate.getUser();
 
     @Override
     @Atomic(mode = TxMode.READ)
     public void run() {
         try {
-            pt.ist.fenixWebFramework.security.UserView.setUser(user);
+//            Authenticate.log
             doIt();
         } finally {
-            pt.ist.fenixWebFramework.security.UserView.setUser(null);
+//            pt.ist.fenixWebFramework.security.UserView.setUser(null);
         }
     }
 

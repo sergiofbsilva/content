@@ -24,7 +24,7 @@
  */
 package module.contents.presentationTier.component;
 
-import pt.ist.bennu.core.util.BundleUtil;
+import pt.ist.bennu.core.i18n.BundleUtil;
 
 import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Button;
@@ -102,7 +102,7 @@ public class ContentEditorLayout extends VerticalLayout {
     }
 
     protected String getMessage(final String key) {
-        return BundleUtil.getStringFromResourceBundle(getBundle(), key);
+        return BundleUtil.getString(getBundle(), key);
     }
 
     public void setContentEditorSaveListner(final ContentEditorSaveListner contentEditorSaveListner) {

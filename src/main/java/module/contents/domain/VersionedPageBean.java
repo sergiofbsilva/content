@@ -27,8 +27,7 @@ package module.contents.domain;
 import java.io.Serializable;
 
 import pt.ist.bennu.core.domain.VirtualHost;
-import pt.ist.bennu.core.domain.contents.Node;
-import pt.ist.bennu.core.domain.groups.PersistentGroup;
+import pt.ist.bennu.core.domain.groups.legacy.PersistentGroup;
 import pt.utl.ist.fenix.tools.util.i18n.MultiLanguageString;
 
 /**
@@ -39,15 +38,15 @@ import pt.utl.ist.fenix.tools.util.i18n.MultiLanguageString;
 public class VersionedPageBean implements Serializable {
 
     private VirtualHost host;
-    private Node node;
+    private VersionedPage page;
     private PersistentGroup group;
     private MultiLanguageString title;
     private MultiLanguageString content;
     private boolean isMinor = false;
 
-    public VersionedPageBean(VirtualHost host, Node node) {
+    public VersionedPageBean(VirtualHost host, VersionedPage page) {
         this.host = host;
-        this.node = node;
+        this.page = page;
     }
 
     public VersionedPageBean(VersionedPage page) {
@@ -61,14 +60,6 @@ public class VersionedPageBean implements Serializable {
 
     public void setHost(VirtualHost host) {
         this.host = host;
-    }
-
-    public Node getNode() {
-        return node;
-    }
-
-    public void setNode(Node node) {
-        this.node = node;
     }
 
     public PersistentGroup getGroup() {

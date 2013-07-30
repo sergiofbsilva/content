@@ -26,11 +26,11 @@ package module.contents.domain;
 
 import java.util.ArrayList;
 
-import pt.ist.bennu.core.applicationTier.Authenticate.UserView;
 import pt.ist.bennu.core.domain.MyOrg;
-import pt.ist.bennu.core.domain.RoleType;
 import pt.ist.bennu.core.domain.User;
-import pt.ist.bennu.core.util.BundleUtil;
+import pt.ist.bennu.core.domain.groups.Group;
+import pt.ist.bennu.core.security.Authenticate;
+import pt.ist.bennu.core.util.legacy.BundleUtil;
 import pt.ist.fenixframework.Atomic;
 
 /**
@@ -88,8 +88,8 @@ public class Page extends Page_Base {
     }
 
     public boolean canEdit() {
-        final User user = UserView.getCurrentUser();
-        return user.hasRoleType(RoleType.MANAGER);
+        final User user = Authenticate.getUser();
+        return Group.parse("#managers").isMember(user);
     }
 
 }

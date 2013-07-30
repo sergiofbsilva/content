@@ -31,20 +31,18 @@ import module.contents.domain.PageVersion;
 import module.contents.domain.VersionedFile;
 import module.contents.domain.VersionedPage;
 import module.contents.domain.VersionedPageBean;
-import module.contents.domain.VersionedPageNode;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 import pt.ist.bennu.core.domain.VirtualHost;
-import pt.ist.bennu.core.domain.contents.Node;
-import pt.ist.bennu.core.domain.groups.AnyoneGroup;
+import pt.ist.bennu.core.domain.groups.legacy.AnyoneGroup;
 import pt.ist.bennu.core.presentationTier.Context;
 import pt.ist.bennu.core.presentationTier.actions.ContextBaseAction;
-import pt.ist.fenixWebFramework.servlets.functionalities.CreateNodeAction;
 import pt.ist.fenixWebFramework.struts.annotations.Mapping;
 import pt.ist.fenixframework.Atomic;
+import pt.ist.fenixframework.FenixFramework;
 
 @Mapping(path = "/pageVersioning")
 /**
@@ -54,15 +52,15 @@ import pt.ist.fenixframework.Atomic;
  */
 public class VersionedContent extends ContextBaseAction {
 
-    @CreateNodeAction(bundle = "CONTENT_RESOURCES", key = "option.create.new.versionedPage", groupKey = "label.module.contents")
+//    @CreateNodeAction(bundle = "CONTENT_RESOURCES", key = "option.create.new.versionedPage", groupKey = "label.module.contents")
     public final ActionForward prepareCreateNewPage(final ActionMapping mapping, final ActionForm form,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final VirtualHost virtualHost = getDomainObject(request, "virtualHostToManageId");
-        final Node node = getDomainObject(request, "parentOfNodesToManageId");
-        final VersionedPageBean pageBean = new VersionedPageBean(virtualHost, node);
+//        final Node node = getDomainObject(request, "parentOfNodesToManageId");
+        final VersionedPageBean pageBean = new VersionedPageBean(virtualHost, getPage(request));
         pageBean.setGroup(AnyoneGroup.getInstance());
         request.setAttribute("pageBean", pageBean);
-
+//
         final Context context = getContext(request);
         return context.forward("/contents/newVersionedPage.jsp");
     }
@@ -72,26 +70,31 @@ public class VersionedContent extends ContextBaseAction {
         final VersionedPageBean pageBean = getRenderedObject("pageBean");
         VersionedPage.createNewPage(pageBean);
         final VirtualHost virtualHost = pageBean.getHost();
-        final Node node = pageBean.getNode();
-        return forwardToMuneConfiguration(request, virtualHost, node);
+        return null;
+//        return forwardToMuneConfiguration(request, virtualHost, node);
     }
 
     public final ActionForward viewPageVersion(HttpServletRequest request, PageVersion version) {
         request.setAttribute("version", version);
         final Context context = getContext(request);
-        if (context.getElements().isEmpty()) {
-            final Node node = Node.getFirstAvailableTopLevelNode();
-            context.push(node);
-        }
+//        if (context.getElements().isEmpty()) {
+//            final Node node = Node.getFirstAvailableTopLevelNode();
+//            context.push(node);
+//        }
         return context.forward("/contents/viewVersion.jsp");
+    }
+
+    private final VersionedPage getPage(HttpServletRequest request) {
+        final String pageExternalId = request.getParameter("pageExternalId");
+        return FenixFramework.getDomainObject(pageExternalId);
     }
 
     public final ActionForward viewPage(final ActionMapping mapping, final ActionForm form, final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
 
-        final Context context = getContext(request);
-        VersionedPageNode node = (VersionedPageNode) context.getSelectedNode();
-        return viewPageVersion(request, node.getPage().getCurrentVersion());
+//        final Context context = getContext(request);
+//        VersionedPageNode node = (VersionedPageNode) context.getSelectedNode();
+        return viewPageVersion(request, getPage(request).getCurrentVersion());
     }
 
     public final ActionForward prepareEditPage(final ActionMapping mapping, final ActionForm form,

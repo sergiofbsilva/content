@@ -26,7 +26,7 @@ package module.contents.domain;
 
 import org.joda.time.DateTime;
 
-import pt.ist.bennu.core.applicationTier.Authenticate.UserView;
+import pt.ist.bennu.core.security.Authenticate;
 
 /**
  * 
@@ -41,7 +41,7 @@ public class FileVersion extends FileVersion_Base implements Comparable<FileVers
         setFile(file);
         init(displayName, filename, content);
         setRevision(revision);
-        setUploader(UserView.getCurrentUser());
+        setUploader(Authenticate.getUser());
         setDate(new DateTime());
     }
 
@@ -49,7 +49,7 @@ public class FileVersion extends FileVersion_Base implements Comparable<FileVers
         setFile(file);
         setCurrentVersionFile(file);
         setRevision(revision);
-        setUploader(UserView.getCurrentUser());
+        setUploader(Authenticate.getUser());
         setDate(new DateTime());
     }
 

@@ -29,7 +29,7 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 
-import pt.ist.bennu.core.applicationTier.Authenticate.UserView;
+import pt.ist.bennu.core.security.Authenticate;
 import pt.utl.ist.fenix.tools.util.i18n.MultiLanguageString;
 
 /**
@@ -48,7 +48,7 @@ public class PageVersion extends PageVersion_Base {
         setPage(versionedPage);
         setRevision(number);
         setContent(content);
-        setCreator(UserView.getCurrentUser());
+        setCreator(Authenticate.getUser());
         versionedPage.setCurrentVersion(this);
     }
 
@@ -56,7 +56,7 @@ public class PageVersion extends PageVersion_Base {
         setDate(new DateTime());
         setPage(versionedPage);
         setRevision(number);
-        setCreator(UserView.getCurrentUser());
+        setCreator(Authenticate.getUser());
         versionedPage.setCurrentVersion(this);
     }
 

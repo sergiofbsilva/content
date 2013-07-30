@@ -24,22 +24,7 @@
  */
 package module.contents.presentationTier.actions;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import module.contents.domain.Page;
-
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-
-import pt.ist.bennu.core.domain.VirtualHost;
-import pt.ist.bennu.core.domain.contents.ActionNode;
-import pt.ist.bennu.core.domain.contents.Node;
-import pt.ist.bennu.core.domain.groups.UserGroup;
 import pt.ist.bennu.core.presentationTier.actions.ContextBaseAction;
-import pt.ist.bennu.vaadin.domain.contents.VaadinNode;
-import pt.ist.fenixWebFramework.servlets.functionalities.CreateNodeAction;
 import pt.ist.fenixWebFramework.struts.annotations.Mapping;
 
 @Mapping(path = "/contentVaadinWiki")
@@ -50,23 +35,23 @@ import pt.ist.fenixWebFramework.struts.annotations.Mapping;
  */
 public class CreateVaadinWikiInterface extends ContextBaseAction {
 
-    @CreateNodeAction(bundle = "CONTENT_RESOURCES", key = "label.create.vaadin.wiki.interface",
-            groupKey = "label.module.contents")
-    public final ActionForward prepareCreateNewPage(final ActionMapping mapping, final ActionForm form,
-            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-
-        final VirtualHost virtualHost = getDomainObject(request, "virtualHostToManageId");
-        final Node node = getDomainObject(request, "parentOfNodesToManageId");
-
-        final Page page = Page.createNewPage();
-
-        VaadinNode.createVaadinNode(virtualHost, node, "resources.ContentResources", "add.interface.vaadinWiki", "PageView-"
-                + page.getExternalId(), UserGroup.getInstance());
-
-        ActionNode.createActionNode(virtualHost, node, "/traditionalPageViewer", "viewPage&pageID=" + page.getExternalId(),
-                "resources.ContentResources", "add.interface.vaadinWiki", UserGroup.getInstance());
-
-        return forwardToMuneConfiguration(request, virtualHost, node);
-    }
+//    @CreateNodeAction(bundle = "CONTENT_RESOURCES", key = "label.create.vaadin.wiki.interface",
+//            groupKey = "label.module.contents")
+//    public final ActionForward prepareCreateNewPage(final ActionMapping mapping, final ActionForm form,
+//            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+//
+//        final VirtualHost virtualHost = getDomainObject(request, "virtualHostToManageId");
+//        final Node node = getDomainObject(request, "parentOfNodesToManageId");
+//
+//        final Page page = Page.createNewPage();
+//
+//        VaadinNode.createVaadinNode(virtualHost, node, "resources.ContentResources", "add.interface.vaadinWiki", "PageView-"
+//                + page.getExternalId(), UserGroup.getInstance());
+//
+//        ActionNode.createActionNode(virtualHost, node, "/traditionalPageViewer", "viewPage&pageID=" + page.getExternalId(),
+//                "resources.ContentResources", "add.interface.vaadinWiki", UserGroup.getInstance());
+//
+//        return forwardToMuneConfiguration(request, virtualHost, node);
+//    }
 
 }

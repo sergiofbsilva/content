@@ -24,10 +24,11 @@
  */
 package module.contents.presentationTier.component;
 
-import pt.ist.bennu.core.applicationTier.Authenticate.UserView;
 import pt.ist.bennu.core.domain.RoleType;
 import pt.ist.bennu.core.domain.User;
-import pt.ist.bennu.core.util.BundleUtil;
+import pt.ist.bennu.core.i18n.BundleUtil;
+import pt.ist.bennu.core.security.Authenticate;
+import pt.ist.bennu.core.util.legacy.LegacyUtil;
 import pt.ist.fenixframework.DomainObject;
 import pt.ist.fenixframework.FenixFramework;
 
@@ -54,12 +55,12 @@ public abstract class BaseComponent extends CustomComponent {
     }
 
     protected String getMessage(final String key, String... args) {
-        return BundleUtil.getFormattedStringFromResourceBundle(getBundle(), key, args);
+        return BundleUtil.getString(getBundle(), key, args);
     }
 
     protected boolean hasRole(final RoleType roleType) {
-        final User user = UserView.getCurrentUser();
-        return user.hasRoleType(roleType);
+        final User user = Authenticate.getUser();
+        return LegacyUtil.hasRoleType(user, roleType);
     }
 
     protected VerticalLayout createVerticalLayout(final AbstractComponentContainer container) {
