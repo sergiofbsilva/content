@@ -27,7 +27,7 @@ package module.contents.domain;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import pt.ist.bennu.core.util.legacy.BundleUtil;
+import pt.ist.bennu.core.util.legacy.LegacyBundleUtil;
 import pt.ist.fenixframework.Atomic;
 
 /**
@@ -40,7 +40,7 @@ public class Container extends Container_Base {
 
     public Container() {
         super();
-        setTitle(BundleUtil.getMultilanguageString("resources.ContentResources", "label.Page.title.defualt"));
+        setTitle(LegacyBundleUtil.getMultilanguageString("resources.ContentResources", "label.Page.title.defualt"));
     }
 
     public SortedSet<Section> getOrderedSections() {

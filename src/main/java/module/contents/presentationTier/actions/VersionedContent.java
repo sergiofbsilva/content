@@ -36,13 +36,12 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
-import pt.ist.bennu.core.domain.VirtualHost;
-import pt.ist.bennu.core.domain.groups.legacy.AnyoneGroup;
 import pt.ist.bennu.core.presentationTier.Context;
+import pt.ist.bennu.core.presentationTier.DefaultContext;
 import pt.ist.bennu.core.presentationTier.actions.ContextBaseAction;
+import pt.ist.bennu.portal.Application;
 import pt.ist.fenixWebFramework.struts.annotations.Mapping;
 import pt.ist.fenixframework.Atomic;
-import pt.ist.fenixframework.FenixFramework;
 
 @Mapping(path = "/pageVersioning")
 /**
@@ -50,17 +49,29 @@ import pt.ist.fenixframework.FenixFramework;
  * @author Paulo Abrantes
  * 
  */
+@Application(bundle = "resources/ContentResources", description = "option.create.new.versionedPage", path = "create",
+        title = "option.create.new.versionedPage")
 public class VersionedContent extends ContextBaseAction {
 
-//    @CreateNodeAction(bundle = "CONTENT_RESOURCES", key = "option.create.new.versionedPage", groupKey = "label.module.contents")
+    @Override
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        final ActionForward forward = super.execute(mapping, form, request, response);
+        final DefaultContext layoutContext = (DefaultContext) getContext(request);
+        layoutContext.addHead("/contents/head.jsp");
+        layoutContext.addScript("/contents/scripts.jsp");
+        return forward;
+
+    }
+
+    public final ActionForward app(final ActionMapping mapping, final ActionForm form, final HttpServletRequest request,
+            final HttpServletResponse response) throws Exception {
+        return prepareCreateNewPage(mapping, form, request, response);
+    }
+
     public final ActionForward prepareCreateNewPage(final ActionMapping mapping, final ActionForm form,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final VirtualHost virtualHost = getDomainObject(request, "virtualHostToManageId");
-//        final Node node = getDomainObject(request, "parentOfNodesToManageId");
-        final VersionedPageBean pageBean = new VersionedPageBean(virtualHost, getPage(request));
-        pageBean.setGroup(AnyoneGroup.getInstance());
-        request.setAttribute("pageBean", pageBean);
-//
+        request.setAttribute("pageBean", new VersionedPageBean());
         final Context context = getContext(request);
         return context.forward("/contents/newVersionedPage.jsp");
     }
@@ -68,33 +79,20 @@ public class VersionedContent extends ContextBaseAction {
     public final ActionForward createNewPage(final ActionMapping mapping, final ActionForm form,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final VersionedPageBean pageBean = getRenderedObject("pageBean");
-        VersionedPage.createNewPage(pageBean);
-        final VirtualHost virtualHost = pageBean.getHost();
-        return null;
-//        return forwardToMuneConfiguration(request, virtualHost, node);
+        final VersionedPage versionedPage = VersionedPage.createNewPage(pageBean);
+        return viewPageVersion(request, versionedPage.getCurrentVersion());
     }
 
     public final ActionForward viewPageVersion(HttpServletRequest request, PageVersion version) {
         request.setAttribute("version", version);
         final Context context = getContext(request);
-//        if (context.getElements().isEmpty()) {
-//            final Node node = Node.getFirstAvailableTopLevelNode();
-//            context.push(node);
-//        }
         return context.forward("/contents/viewVersion.jsp");
-    }
-
-    private final VersionedPage getPage(HttpServletRequest request) {
-        final String pageExternalId = request.getParameter("pageExternalId");
-        return FenixFramework.getDomainObject(pageExternalId);
     }
 
     public final ActionForward viewPage(final ActionMapping mapping, final ActionForm form, final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
-
-//        final Context context = getContext(request);
-//        VersionedPageNode node = (VersionedPageNode) context.getSelectedNode();
-        return viewPageVersion(request, getPage(request).getCurrentVersion());
+        VersionedPage page = getDomainObject(request, "pageId");
+        return viewPageVersion(request, page.getCurrentVersion());
     }
 
     public final ActionForward prepareEditPage(final ActionMapping mapping, final ActionForm form,

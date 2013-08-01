@@ -30,7 +30,7 @@ import pt.ist.bennu.core.domain.MyOrg;
 import pt.ist.bennu.core.domain.User;
 import pt.ist.bennu.core.domain.groups.Group;
 import pt.ist.bennu.core.security.Authenticate;
-import pt.ist.bennu.core.util.legacy.BundleUtil;
+import pt.ist.bennu.core.util.legacy.LegacyBundleUtil;
 import pt.ist.fenixframework.Atomic;
 
 /**
@@ -45,7 +45,7 @@ public class Page extends Page_Base {
     public Page() {
         super();
         setMyOrg(MyOrg.getInstance());
-        setLink(BundleUtil.getMultilanguageString("resources.ContentResources", "label.Page.link.defualt"));
+        setLink(LegacyBundleUtil.getMultilanguageString("resources.ContentResources", "label.Page.link.defualt"));
     }
 
     @Atomic

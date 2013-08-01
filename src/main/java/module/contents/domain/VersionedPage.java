@@ -26,12 +26,14 @@ package module.contents.domain;
 
 import java.util.List;
 
+import pt.ist.bennu.core.domain.Bennu;
 import pt.ist.bennu.core.domain.MyOrg;
 import pt.ist.bennu.core.domain.User;
-import pt.ist.bennu.core.domain.VirtualHost;
 import pt.ist.bennu.core.domain.groups.Group;
-import pt.ist.bennu.core.domain.groups.legacy.PersistentGroup;
 import pt.ist.bennu.core.security.Authenticate;
+import pt.ist.bennu.core.util.legacy.LegacyBundleUtil;
+import pt.ist.bennu.portal.domain.MenuItem;
+import pt.ist.dsi.commons.i18n.LocalizedString;
 import pt.ist.fenixframework.Atomic;
 import pt.utl.ist.fenix.tools.util.i18n.MultiLanguageString;
 
@@ -42,17 +44,26 @@ import pt.utl.ist.fenix.tools.util.i18n.MultiLanguageString;
  */
 public class VersionedPage extends VersionedPage_Base {
 
-    public VersionedPage(VirtualHost host, PersistentGroup group, MultiLanguageString title) {
+    public VersionedPage(MultiLanguageString title) {
         setMyOrg(MyOrg.getInstance());
         setTitle(title);
+        createMenuItem(title);
         new PageVersion(this, 0);
-//        final VersionedPageNode pageNode = new VersionedPageNode(host, node, this, null);
-//        pageNode.setAccessibilityGroup(group);
+    }
+
+    private void createMenuItem(MultiLanguageString title) {
+        MenuItem menu = new MenuItem();
+        final LocalizedString titleLS = LegacyBundleUtil.getLocalizedString(title);
+        menu.setTitle(titleLS);
+        menu.setDescription(titleLS);
+        menu.setAccessExpression("anyone");
+        menu.setPath("pageVersioning.do?method=viewPage&pageId=" + getExternalId());
+        Bennu.getInstance().getConfiguration().getMenu().addChild(menu);
     }
 
     @Atomic
     public static VersionedPage createNewPage(VersionedPageBean pageBean) {
-        return new VersionedPage(pageBean.getHost(), pageBean.getGroup(), pageBean.getTitle());
+        return new VersionedPage(pageBean.getTitle());
     }
 
     @Atomic

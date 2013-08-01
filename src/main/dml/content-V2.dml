@@ -105,3 +105,8 @@ relation VersionedFileCreator {
 	.pt.ist.bennu.core.domain.User playsRole uploader;
 }
 
+relation VersionedFileMenuItem {
+	.pt.ist.bennu.portal.domain.MenuItem playsRole menuItem;
+	VersionedPage playsRole page;
+}
+

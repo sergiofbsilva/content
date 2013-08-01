@@ -44,12 +44,8 @@ public class PageVersion extends PageVersion_Base {
     }
 
     public PageVersion(VersionedPage versionedPage, int number, MultiLanguageString content) {
-        setDate(new DateTime());
-        setPage(versionedPage);
-        setRevision(number);
+        this(versionedPage, number);
         setContent(content);
-        setCreator(Authenticate.getUser());
-        versionedPage.setCurrentVersion(this);
     }
 
     public PageVersion(VersionedPage versionedPage, int number) {

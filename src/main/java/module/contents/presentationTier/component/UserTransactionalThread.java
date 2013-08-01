@@ -26,6 +26,7 @@ package module.contents.presentationTier.component;
 
 import pt.ist.bennu.core.domain.User;
 import pt.ist.bennu.core.security.Authenticate;
+import pt.ist.bennu.core.security.UserSession;
 import pt.ist.fenixframework.Atomic;
 import pt.ist.fenixframework.Atomic.TxMode;
 
@@ -37,16 +38,20 @@ import pt.ist.fenixframework.Atomic.TxMode;
 public abstract class UserTransactionalThread extends Thread {
 
     //TODO: What about Authenticate.setUser
-    private final User user = Authenticate.getUser();
+    private final UserSession userSession;
+
+    public UserTransactionalThread(UserSession userSession) {
+        this.userSession = userSession;
+    }
 
     @Override
     @Atomic(mode = TxMode.READ)
     public void run() {
         try {
-//            Authenticate.log
+            Authenticate.setUser(userSession);
             doIt();
         } finally {
-//            pt.ist.fenixWebFramework.security.UserView.setUser(null);
+            Authenticate.setUser((User) null);
         }
     }
 

@@ -28,6 +28,8 @@ import java.util.Collection;
 
 import module.contents.domain.Page;
 import module.contents.domain.Section;
+import pt.ist.bennu.core.security.Authenticate;
+import pt.ist.bennu.core.security.UserSession;
 
 import com.vaadin.ui.Label;
 
@@ -48,7 +50,7 @@ public class PageMenuComponent extends BaseComponent {
     public void attach() {
         super.attach();
         setCompositionRoot(ProgressFactory.createCenteredProgressIndicator());
-        new Worker().start();
+        new Worker(Authenticate.getUserSession()).start();
     }
 
     private void addMenu(final StringBuilder stringBuilder, final Collection<Section> sections) {
@@ -69,6 +71,10 @@ public class PageMenuComponent extends BaseComponent {
     }
 
     public class Worker extends UserTransactionalThread {
+
+        public Worker(UserSession userSession) {
+            super(userSession);
+        }
 
         @Override
         public void doIt() {

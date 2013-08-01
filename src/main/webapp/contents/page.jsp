@@ -31,7 +31,7 @@
 							<logic:notEmpty name="section" property="title">
 								<bean:define id="title" name="section" property="title"/>
 								<logic:present name="USER_SESSION_ATTRIBUTE">
-								<logic:present role="pt.ist.bennu.core.domain.RoleType.MANAGER">
+								<logic:present role="#managers">
 									<div style="float: right;">
 										<html:link page="/content.do?method=prepareEditSection" paramId="sectionOid" paramName="section" paramProperty="externalId">
 											<bean:message bundle="MYORG_RESOURCES" key="label.content.section.edit"/>

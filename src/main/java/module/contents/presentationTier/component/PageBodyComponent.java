@@ -27,6 +27,8 @@ package module.contents.presentationTier.component;
 import module.contents.domain.Page;
 import module.contents.domain.Section;
 import module.contents.presentationTier.component.PageView.MenuReRenderListner;
+import pt.ist.bennu.core.security.Authenticate;
+import pt.ist.bennu.core.security.UserSession;
 
 import com.vaadin.ui.AbstractComponentContainer;
 
@@ -49,7 +51,7 @@ public class PageBodyComponent extends BaseComponent {
     public void attach() {
         super.attach();
         setCompositionRoot(ProgressFactory.createCenteredProgressIndicator());
-        new Worker().start();
+        new Worker(Authenticate.getUserSession()).start();
     }
 
     public void addSection(final Section section) {
@@ -62,6 +64,10 @@ public class PageBodyComponent extends BaseComponent {
     }
 
     public class Worker extends UserTransactionalThread {
+
+        public Worker(UserSession userSession) {
+            super(userSession);
+        }
 
         @Override
         public void doIt() {

@@ -44,7 +44,7 @@
 		<ul>
 			<logic:equal name="selectedVersion" property="currentVersion" value="true">
 				<logic:equal name="selectedVersion" property="currentVersion" value="true">
-					<logic:present role="pt.ist.bennu.core.domain.RoleType.MANAGER">
+					<logic:present role="#managers">
 						<li><%= GenericChecksumRewriter.NO_CHECKSUM_PREFIX %><a href="#pageOptions"><bean:message key="label.wiki.options" bundle="CONTENT_RESOURCES"/></a></li>
 					</logic:present>
 				</logic:equal>
@@ -58,7 +58,7 @@
 		</ul>
 		<%= pt.ist.fenixWebFramework.servlets.filters.contentRewrite.RequestRewriter.END_BLOCK_HAS_CONTEXT_PREFIX %>
 		<logic:equal name="selectedVersion" property="currentVersion" value="true">
-			<logic:present role="pt.ist.bennu.core.domain.RoleType.MANAGER">
+			<logic:present role="#managers">
 				<div id="pageOptions">
 					<ul>
 						<li><html:link page="/pageVersioning.do?method=prepareEditPage" paramId="pageId" paramName="selectedVersion" paramProperty="page.externalId"><bean:message key="label.wiki.action.edit" bundle="CONTENT_RESOURCES"/></html:link></li>
@@ -80,7 +80,7 @@
 	
 				<li> file <%= index %> V. <fr:view name="file" property="revision"/> (current: <fr:view name="file" property="file.currentRevision"/>) 
 				<logic:equal name="selectedVersion" property="currentVersion" value="true">
-					<logic:present role="pt.ist.bennu.core.domain.RoleType.MANAGER">
+					<logic:present role="#managers">
 						<bean:define id="versionedFileId" name="file" property="file.externalId"/>
 						<html:link page="<%= "/pageVersioning.do?method=addFileVersion&versionId=" + selectedVersionId.toString() + "&versionFileId=" + versionedFileId%>">Add Version</html:link>
 					</logic:present>
@@ -104,7 +104,7 @@
 						
 						(<html:link page="<%= "/pageVersioning.do?method=viewVersion&versionId=" + versionId%>"><bean:message key="label.wiki.action.view" bundle="CONTENT_RESOURCES"/></html:link>
 						<logic:equal name="version" property="currentVersion" value="false">
-							<logic:present role="pt.ist.bennu.core.domain.RoleType.MANAGER">
+							<logic:present role="#managers">
 								,<html:link page="<%= "/pageVersioning.do?method=revertPage&versionId=" + versionId%>" paramId="pageId" paramName="selectedVersion" paramProperty="page.externalId"><bean:message key="label.wiki.action.revertToThis" bundle="CONTENT_RESOURCES"/></html:link>
 							</logic:present>
 						</logic:equal>
@@ -117,5 +117,4 @@
 			
 	</logic:equal>
 	</div>
-	
 </logic:present>

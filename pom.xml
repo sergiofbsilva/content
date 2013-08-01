@@ -37,6 +37,16 @@
 		</dependency>
 		<dependency>
 			<groupId>pt.ist.bennu</groupId>
+			<artifactId>bennu-legacy</artifactId>
+			<version>${version.pt.ist.bennu.bennu.core}</version>
+		</dependency>
+		<dependency>
+			<groupId>pt.ist.bennu</groupId>
+			<artifactId>bennu-portal</artifactId>
+			<version>${version.pt.ist.bennu.bennu.core}</version>
+		</dependency>
+		<dependency>
+			<groupId>pt.ist.bennu</groupId>
 			<artifactId>bennu-io</artifactId>
 			<version>${version.pt.ist.bennu.bennu.io}</version>
 		</dependency>
@@ -49,6 +59,11 @@
 			<groupId>pt.ist.bennu</groupId>
 			<artifactId>bennu-renderers</artifactId>
 			<version>${version.pt.ist.bennu.bennu.renderers}</version>
+		</dependency>
+		<dependency>
+			<groupId>pt.ist</groupId>
+			<artifactId>dsi-commons</artifactId>
+    		<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
